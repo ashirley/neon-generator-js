@@ -6,14 +6,28 @@ import {
   // @ts-ignore
 } from "https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js";
 
+import { SvgPreview } from "./SvgPreview.js";
+
 export class FileReaderComponent extends LitElement {
   render() {
     return html`
       ${sessionStorage.getItem("previousSvg")
-        ? html`<button @click=${(e) => this.loadFromSessionStorage()}>
-            Load Previous
-          </button>`
+        ? html`<svg-preview
+            title="Load Previous"
+            @click=${(e) => this.loadFromSessionStorage()}
+            src=${"data:image/svg+xml;base64," +
+            btoa(sessionStorage.getItem("previousSvg"))}
+          >
+          </svg-preview>`
         : ""}
+      <!-- 2lines.svg  arc.svg     freehand-simpler.svg  lines.svg     size.svg    toilet-small.svg  tree.svg
+2paths.svg  curves.svg  freehand.svg          s-curves.svg  spiral.svg  toilet.svg -->
+      <svg-preview
+        title="2 lines"
+        @click=${(e) => this.loadFromUrl("/examples/2lines.svg")}
+        src="/examples/2lines.svg"
+      >
+      </svg-preview>
       <input
         type="file"
         id="file-selector"
@@ -24,6 +38,11 @@ export class FileReaderComponent extends LitElement {
 
   loadFromSessionStorage() {
     this.emitLoadedEvent(sessionStorage.getItem("previousSvg"));
+  }
+
+  async loadFromUrl(url) {
+    const data = await fetch(url);
+    this.emitLoadedEvent(await data.text());
   }
 
   readFile(file) {

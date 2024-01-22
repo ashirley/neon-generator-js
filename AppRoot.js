@@ -9,7 +9,7 @@ import {
 //import { PaperRender } from "./PaperRender.js";
 import { Generator } from "./generator/Generator.js";
 import { GenerationInput } from "./generator/GenerationInput.js";
-import { FileReaderComponent } from "./FileReaderComponent.js";
+import { FileReaderComponent } from "./svgInput/FileReaderComponent.js";
 import { PaperRender } from "./PaperRender.js";
 
 export class AppRoot extends LitElement {
