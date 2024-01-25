@@ -3,11 +3,20 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Neon Generator</title>
-    <script type="text/javascript" src="./node_modules/paper/dist/paper-full.js"></script> 
-    <script type="text/javascript" src="./node_modules/paperjs-offset/dist/paperjs-offset.js"></script> 
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script
+      type="text/javascript"
+      src="./node_modules/paper/dist/paper-full.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="./node_modules/paperjs-offset/dist/paperjs-offset.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
     <link href="https://fonts.googleapis.com/css2?family=Macondo&family=Raleway:wght@200&display=swap" rel="stylesheet"> 
     -->
@@ -21,12 +30,19 @@
         padding: 0;
       }
     </style>
-
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/",
+          "lit": "https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js"
+        }
+      }
+    </script>
   </head>
 
   <body>
-    <app-root style="width:100%"></app-root>
+    <app-root style="width: 100%"></app-root>
     <script type="module" src="AppRoot.js"></script>
   </body>
 </html>
-

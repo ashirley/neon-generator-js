@@ -1,9 +1,5 @@
 "use strict";
-import {
-  LitElement,
-  html,
-  css,
-} from "https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js";
+import { LitElement, html, css } from "lit";
 
 // import { BabylonRender } from "./BabylonRender.js";
 //import { PaperRender } from "./PaperRender.js";
@@ -11,6 +7,7 @@ import { Generator } from "./generator/Generator.js";
 import { GenerationInput } from "./generator/GenerationInput.js";
 import { FileReaderComponent } from "./svgInput/FileReaderComponent.js";
 import { PaperRender } from "./PaperRender.js";
+import { ThreeRender } from "./ThreeRender.js";
 
 export class AppRoot extends LitElement {
   static properties = {
@@ -50,10 +47,13 @@ export class AppRoot extends LitElement {
           />`
         : this._perpPoints == null
         ? html`<p>Generating...</p>`
-        : html`<paper-render
-            perpPoints=${JSON.stringify(this._perpPoints)}
-            style="width: 100%; display: block;"
-          ></paper-render>`}
+        : html`<three-render
+              perpPoints=${JSON.stringify(this._perpPoints)}
+            ></three-render>
+            <paper-render
+              perpPoints=${JSON.stringify(this._perpPoints)}
+              style="width: 100%; display: block;"
+            ></paper-render>`}
     `;
   }
 }

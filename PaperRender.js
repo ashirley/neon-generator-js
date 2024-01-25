@@ -5,7 +5,7 @@ import {
   html,
   css,
   // @ts-ignore
-} from "https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js";
+} from "lit";
 
 export class PaperRender extends LitElement {
   static properties = {
