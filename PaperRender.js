@@ -50,7 +50,7 @@ export class PaperRender extends LitElement {
       var prev_perp_point = null;
       var first = true;
       points.forEach((point) => {
-        console.log(point);
+        // console.log(point);
         if (first) {
           // Add a dot for the first left point
           const firstPointCircle = new paper.Shape.Circle(
@@ -113,12 +113,12 @@ export class PaperRender extends LitElement {
     min_y = min_y - y_padding;
     max_y = max_y + y_padding;
 
-    console.log(
-      this.paperView.bounds.x - min_x,
-      this.paperView.bounds.y - min_y,
-      (max_x - min_x) / this.paperView.bounds.width,
-      (max_y - min_y) / this.paperView.bounds.height
-    );
+    // console.log(
+    //   this.paperView.bounds.x - min_x,
+    //   this.paperView.bounds.y - min_y,
+    //   (max_x - min_x) / this.paperView.bounds.width,
+    //   (max_y - min_y) / this.paperView.bounds.height
+    // );
     this.paperProject.activeLayer.transform(
       new paper.Matrix()
         .translate(

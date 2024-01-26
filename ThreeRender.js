@@ -7,11 +7,6 @@ import {
   // @ts-ignore
 } from "lit";
 
-//TODO: inline
-function r(a, b, c) {
-  return [c, b, a];
-}
-
 //https://stackoverflow.com/a/45046955/6950
 function resizeCanvasToDisplaySize(renderer, camera) {
   const canvas = renderer.domElement;
@@ -97,46 +92,46 @@ export class ThreeRender extends LitElement {
       //add indices to draw the actual triangles using those vertices.
 
       //end face
-      indices.push(...r(i * 8 + 3, i * 8 + 1, i * 8 + 0));
-      indices.push(...r(i * 8 + 2, i * 8 + 1, i * 8 + 3));
-      indices.push(...r(i * 8 + 7, i * 8 + 3, i * 8 + 0));
-      indices.push(...r(i * 8 + 7, i * 8 + 4, i * 8 + 3));
-      indices.push(...r(i * 8 + 6, i * 8 + 5, i * 8 + 4));
-      indices.push(...r(i * 8 + 6, i * 8 + 4, i * 8 + 7));
+      indices.push(i * 8 + 0, i * 8 + 1, i * 8 + 3);
+      indices.push(i * 8 + 3, i * 8 + 1, i * 8 + 2);
+      indices.push(i * 8 + 0, i * 8 + 3, i * 8 + 7);
+      indices.push(i * 8 + 3, i * 8 + 4, i * 8 + 7);
+      indices.push(i * 8 + 4, i * 8 + 5, i * 8 + 6);
+      indices.push(i * 8 + 7, i * 8 + 4, i * 8 + 6);
 
       //connecting faces
       for (let j = 0; j < points.length - 1; j++) {
-        indices.push(...r(i * 8 + 0, i * 8 + 1, i * 8 + 8));
-        indices.push(...r(i * 8 + 1, i * 8 + 9, i * 8 + 8));
-        indices.push(...r(i * 8 + 1, i * 8 + 2, i * 8 + 9));
-        indices.push(...r(i * 8 + 2, i * 8 + 10, i * 8 + 9));
-        indices.push(...r(i * 8 + 2, i * 8 + 3, i * 8 + 10));
-        indices.push(...r(i * 8 + 3, i * 8 + 11, i * 8 + 10));
-        indices.push(...r(i * 8 + 3, i * 8 + 4, i * 8 + 11));
-        indices.push(...r(i * 8 + 4, i * 8 + 12, i * 8 + 11));
-        indices.push(...r(i * 8 + 4, i * 8 + 5, i * 8 + 12));
-        indices.push(...r(i * 8 + 5, i * 8 + 13, i * 8 + 12));
-        indices.push(...r(i * 8 + 5, i * 8 + 6, i * 8 + 13));
-        indices.push(...r(i * 8 + 6, i * 8 + 14, i * 8 + 13));
-        indices.push(...r(i * 8 + 6, i * 8 + 7, i * 8 + 14));
-        indices.push(...r(i * 8 + 7, i * 8 + 15, i * 8 + 14));
-        indices.push(...r(i * 8 + 7, i * 8 + 0, i * 8 + 15));
-        indices.push(...r(i * 8 + 0, i * 8 + 8, i * 8 + 15));
+        indices.push(i * 8 + 8, i * 8 + 1, i * 8 + 0);
+        indices.push(i * 8 + 8, i * 8 + 9, i * 8 + 1);
+        indices.push(i * 8 + 9, i * 8 + 2, i * 8 + 1);
+        indices.push(i * 8 + 9, i * 8 + 10, i * 8 + 2);
+        indices.push(i * 8 + 10, i * 8 + 3, i * 8 + 2);
+        indices.push(i * 8 + 10, i * 8 + 11, i * 8 + 3);
+        indices.push(i * 8 + 11, i * 8 + 4, i * 8 + 3);
+        indices.push(i * 8 + 11, i * 8 + 12, i * 8 + 4);
+        indices.push(i * 8 + 12, i * 8 + 5, i * 8 + 4);
+        indices.push(i * 8 + 12, i * 8 + 13, i * 8 + 5);
+        indices.push(i * 8 + 13, i * 8 + 6, i * 8 + 5);
+        indices.push(i * 8 + 13, i * 8 + 14, i * 8 + 6);
+        indices.push(i * 8 + 14, i * 8 + 7, i * 8 + 6);
+        indices.push(i * 8 + 14, i * 8 + 15, i * 8 + 7);
+        indices.push(i * 8 + 15, i * 8 + 0, i * 8 + 7);
+        indices.push(i * 8 + 15, i * 8 + 8, i * 8 + 0);
         i++;
       }
 
       //end face
-      indices.push(...r(i * 8 + 0, i * 8 + 1, i * 8 + 3));
-      indices.push(...r(i * 8 + 3, i * 8 + 1, i * 8 + 2));
-      indices.push(...r(i * 8 + 0, i * 8 + 3, i * 8 + 7));
-      indices.push(...r(i * 8 + 3, i * 8 + 4, i * 8 + 7));
-      indices.push(...r(i * 8 + 4, i * 8 + 5, i * 8 + 6));
-      indices.push(...r(i * 8 + 7, i * 8 + 4, i * 8 + 6));
+      indices.push(i * 8 + 3, i * 8 + 1, i * 8 + 0);
+      indices.push(i * 8 + 2, i * 8 + 1, i * 8 + 3);
+      indices.push(i * 8 + 7, i * 8 + 3, i * 8 + 0);
+      indices.push(i * 8 + 7, i * 8 + 4, i * 8 + 3);
+      indices.push(i * 8 + 6, i * 8 + 5, i * 8 + 4);
+      indices.push(i * 8 + 6, i * 8 + 4, i * 8 + 7);
       i++;
     });
 
-    console.log(vertices);
-    console.log(indices);
+    // console.log(vertices);
+    // console.log(indices);
 
     geometry.setIndex(indices);
     geometry.setAttribute(

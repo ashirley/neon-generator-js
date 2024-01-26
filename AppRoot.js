@@ -26,6 +26,7 @@ export class AppRoot extends LitElement {
       display: inline-block;
       min-width: 4em;
       text-align: center;
+      height: 100%;
       /* padding: 0.2em;
       margin: 0.2em 0.1em; */
     }
@@ -33,6 +34,7 @@ export class AppRoot extends LitElement {
     #mainContent {
       display: grid;
       grid-template-columns: 50% 50%;
+      height: 100%;
     }
 
     #mainContent h1 {
