@@ -29,31 +29,62 @@ export class AppRoot extends LitElement {
       /* padding: 0.2em;
       margin: 0.2em 0.1em; */
     }
+
+    #mainContent {
+      display: grid;
+      grid-template-columns: 50% 50%;
+    }
+
+    #mainContent h1 {
+      grid-row: 1;
+      grid-column: 1 / 3;
+    }
+
+    #mainContent paper-render {
+      grid-row: 2;
+      grid-column: 1;
+    }
+
+    #mainContent three-render {
+      grid-row: 2;
+      grid-column: 2;
+    }
+
+    #mainContent file-reader {
+      grid-row: 2;
+      grid-column: 1 / 3;
+    }
+
+    #mainContent generation-input-controls {
+      grid-row: 3;
+      grid-column: 1 / 3;
+    }
   `;
 
   render() {
     return html`
-      <h1>Neon generator</h1>
-      ${this._inputFile == null
-        ? html`<file-reader
-            @loaded=${async (e) => {
-              const result = await this.generator.generate(
-                new GenerationInput(e.detail.contents)
-              );
-              this._inputFile = e.detail.contents;
-              this._perpPoints = result.perpPoints;
-              this._stl = result.stl;
-            }}
-          />`
-        : this._perpPoints == null
-        ? html`<p>Generating...</p>`
-        : html`<three-render
-              perpPoints=${JSON.stringify(this._perpPoints)}
-            ></three-render>
-            <paper-render
-              perpPoints=${JSON.stringify(this._perpPoints)}
-              style="width: 100%; display: block;"
-            ></paper-render>`}
+      <div id="mainContent">
+        <h1>Neon generator</h1>
+        ${this._inputFile == null
+          ? html`<file-reader
+              @loaded=${async (e) => {
+                const result = await this.generator.generate(
+                  new GenerationInput(e.detail.contents)
+                );
+                this._inputFile = e.detail.contents;
+                this._perpPoints = result.perpPoints;
+                this._stl = result.stl;
+              }}
+            />`
+          : this._perpPoints == null
+          ? html`<p>Generating...</p>`
+          : html`<three-render
+                perpPoints=${JSON.stringify(this._perpPoints)}
+              ></three-render>
+              <paper-render
+                perpPoints=${JSON.stringify(this._perpPoints)}
+              ></paper-render>`}
+      </div>
     `;
   }
 }

@@ -7,12 +7,27 @@ import {
   // @ts-ignore
 } from "lit";
 
+//TODO: inline
 function r(a, b, c) {
   return [c, b, a];
 }
 
-function t(a, b, c) {
-  return [a, b, c];
+//https://stackoverflow.com/a/45046955/6950
+function resizeCanvasToDisplaySize(renderer, camera) {
+  const canvas = renderer.domElement;
+  // look up the size the canvas is being displayed
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+
+  // adjust displayBuffer size to match
+  if (canvas.width !== width || canvas.height !== height) {
+    // you must pass false here or three.js sadly fights the browser
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+    // update any render target sizes here
+  }
 }
 
 export class ThreeRender extends LitElement {
@@ -20,12 +35,19 @@ export class ThreeRender extends LitElement {
     perpPoints: { type: Array },
   };
 
+  static styles = css`
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  `;
+
   render() {
     const scene = new THREE.Scene();
     const group = new THREE.Group();
     scene.add(group);
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
 
     // soft white lights
     const light = new THREE.PointLight(0x404040, 1000000);
@@ -96,7 +118,6 @@ export class ThreeRender extends LitElement {
         indices.push(...r(i * 8 + 5, i * 8 + 13, i * 8 + 12));
         indices.push(...r(i * 8 + 5, i * 8 + 6, i * 8 + 13));
         indices.push(...r(i * 8 + 6, i * 8 + 14, i * 8 + 13));
-
         indices.push(...r(i * 8 + 6, i * 8 + 7, i * 8 + 14));
         indices.push(...r(i * 8 + 7, i * 8 + 15, i * 8 + 14));
         indices.push(...r(i * 8 + 7, i * 8 + 0, i * 8 + 15));
@@ -143,15 +164,15 @@ export class ThreeRender extends LitElement {
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     material.envMap = pmremGenerator.fromScene(scene);
 
-    const axesHelper = new THREE.AxesHelper(500);
-    group.add(axesHelper);
+    // const axesHelper = new THREE.AxesHelper(500);
+    // group.add(axesHelper);
 
-    const box = new THREE.BoxHelper(mesh, 0xffff00);
-    group.add(box);
+    // const box = new THREE.BoxHelper(mesh, 0xffff00);
+    // group.add(box);
 
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      1, //start with 1 aspect-ratio as this will be resized dynamically in the animation loop
       0.1,
       10000
     );
@@ -169,6 +190,7 @@ export class ThreeRender extends LitElement {
     controls.autoRotate = true;
 
     function animate() {
+      resizeCanvasToDisplaySize(renderer, camera);
       requestAnimationFrame(animate);
 
       controls.update();
