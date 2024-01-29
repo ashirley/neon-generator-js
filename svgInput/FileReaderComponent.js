@@ -9,31 +9,64 @@ import {
 import { SvgPreview } from "./SvgPreview.js";
 
 export class FileReaderComponent extends LitElement {
+  static styles = css`
+    :host {
+      overflow: scroll;
+    }
+    .samples {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .mainSelection {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  `;
+
   render() {
     return html`
-      ${sessionStorage.getItem("previousSvg")
-        ? html`<svg-preview
-            title="Load Previous"
-            @click=${(e) => this.loadFromSessionStorage()}
-            src=${"data:image/svg+xml;base64," +
-            btoa(sessionStorage.getItem("previousSvg"))}
-          >
-          </svg-preview>`
-        : ""}
-      <!-- 2lines.svg  arc.svg     freehand-simpler.svg  lines.svg     size.svg    toilet-small.svg  tree.svg
-2paths.svg  curves.svg  freehand.svg          s-curves.svg  spiral.svg  toilet.svg -->
-      <svg-preview
-        title="2 lines"
-        @click=${(e) => this.loadFromUrl("/examples/2lines.svg")}
-        src="/examples/2lines.svg"
-      >
-      </svg-preview>
-      <input
-        type="file"
-        id="file-selector"
-        @change=${(event) => this.readFile(event.target.files[0])}
-      />
+      <div class="mainSelection">
+        ${sessionStorage.getItem("previousSvg")
+          ? html`<svg-preview
+              title="Load Previous"
+              @click=${(e) => this.loadFromSessionStorage()}
+              src=${"data:image/svg+xml;base64," +
+              btoa(sessionStorage.getItem("previousSvg"))}
+            >
+            </svg-preview>`
+          : ""}
+        <input
+          type="file"
+          id="file-selector"
+          @change=${(event) => this.readFile(event.target.files[0])}
+        />
+      </div>
+      <h3>Samples</h3>
+      <div class="samples">
+        ${this.sample("2 lines", "/examples/2lines.svg")}
+        ${this.sample("Arc", "/examples/arc.svg")}
+        ${this.sample("Freehand Simpler", "/examples/freehand-simpler.svg")}
+        ${this.sample("Lines", "/examples/lines.svg")}
+        ${this.sample("Size", "/examples/size.svg")}
+        ${this.sample("Toilet (small)", "/examples/toilet-small.svg")}
+        ${this.sample("Tree", "/examples/tree.svg")}
+        ${this.sample("2 paths", "/examples/2paths.svg")}
+        ${this.sample("Curves", "/examples/curves.svg")}
+        ${this.sample("Freehand", "/examples/freehand.svg")}
+        ${this.sample("S Curves", "/examples/s-curves.svg")}
+        ${this.sample("Spiral", "/examples/spiral.svg")}
+        ${this.sample("Toilet", "/examples/toilet.svg")}
+      </div>
     `;
+  }
+
+  sample(title, url) {
+    return html`<svg-preview
+      title=${title}
+      @click=${(e) => this.loadFromUrl(url)}
+      src=${url}
+    >
+    </svg-preview> `;
   }
 
   loadFromSessionStorage() {

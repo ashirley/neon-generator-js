@@ -8,6 +8,7 @@ import { GenerationInput } from "./generator/GenerationInput.js";
 import { FileReaderComponent } from "./svgInput/FileReaderComponent.js";
 import { PaperRender } from "./PaperRender.js";
 import { ThreeRender } from "./ThreeRender.js";
+import { GenerationInputControls } from "./GenerationInputControls.js";
 
 export class AppRoot extends LitElement {
   static properties = {
@@ -23,70 +24,65 @@ export class AppRoot extends LitElement {
 
   static styles = css`
     :host {
-      display: inline-block;
-      min-width: 4em;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    h1 {
       text-align: center;
-      height: 100%;
-      /* padding: 0.2em;
-      margin: 0.2em 0.1em; */
+      flex: 0;
     }
 
-    #mainContent {
-      display: grid;
-      grid-template-columns: 50% 50%;
-      height: 100%;
+    .renders {
+      flex: 1;
+      overflow: hidden;
+
+      display: flex;
     }
 
-    #mainContent h1 {
-      grid-row: 1;
-      grid-column: 1 / 3;
+    paper-render {
+      width: 50%;
     }
 
-    #mainContent paper-render {
-      grid-row: 2;
-      grid-column: 1;
+    three-render {
+      width: 50%;
     }
 
-    #mainContent three-render {
-      grid-row: 2;
-      grid-column: 2;
+    file-reader {
+      flex: 1;
     }
 
-    #mainContent file-reader {
-      grid-row: 2;
-      grid-column: 1 / 3;
-    }
-
-    #mainContent generation-input-controls {
-      grid-row: 3;
-      grid-column: 1 / 3;
+    generation-input-controls {
+      flex: 0;
     }
   `;
 
   render() {
     return html`
-      <div id="mainContent">
-        <h1>Neon generator</h1>
-        ${this._inputFile == null
-          ? html`<file-reader
-              @loaded=${async (e) => {
-                const result = await this.generator.generate(
-                  new GenerationInput(e.detail.contents)
-                );
-                this._inputFile = e.detail.contents;
-                this._perpPoints = result.perpPoints;
-                this._stl = result.stl;
-              }}
-            />`
-          : this._perpPoints == null
-          ? html`<p>Generating...</p>`
-          : html`<three-render
-                perpPoints=${JSON.stringify(this._perpPoints)}
-              ></three-render>
-              <paper-render
-                perpPoints=${JSON.stringify(this._perpPoints)}
-              ></paper-render>`}
-      </div>
+      <h1>Neon generator</h1>
+      ${this._inputFile == null
+        ? html`<file-reader
+            @loaded=${async (e) => {
+              const result = await this.generator.generate(
+                new GenerationInput(e.detail.contents)
+              );
+              this._inputFile = e.detail.contents;
+              this._perpPoints = result.perpPoints;
+              this._stl = result.stl;
+            }}
+          />`
+        : this._perpPoints == null
+        ? html`<p>Generating...</p>`
+        : html`<div class="renders">
+            <three-render
+              perpPoints=${JSON.stringify(this._perpPoints)}
+            ></three-render>
+            <paper-render
+              perpPoints=${JSON.stringify(this._perpPoints)}
+            ></paper-render>
+          </div> `}
+      <generation-input-controls></generation-input-controls>
     `;
   }
 }
