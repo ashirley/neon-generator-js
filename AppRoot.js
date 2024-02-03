@@ -4,7 +4,6 @@ import { LitElement, html, css } from "lit";
 // import { BabylonRender } from "./BabylonRender.js";
 //import { PaperRender } from "./PaperRender.js";
 import { Generator } from "./generator/Generator.js";
-import { GenerationInput } from "./generator/GenerationInput.js";
 import { FileReaderComponent } from "./svgInput/FileReaderComponent.js";
 import { PaperRender } from "./PaperRender.js";
 import { ThreeRender } from "./ThreeRender.js";
@@ -64,12 +63,8 @@ export class AppRoot extends LitElement {
       ${this._inputFile == null
         ? html`<file-reader
             @loaded=${async (e) => {
-              const result = await this.generator.generate(
-                new GenerationInput(e.detail.contents)
-              );
               this._inputFile = e.detail.contents;
-              this._perpPoints = result.perpPoints;
-              this._stl = result.stl;
+              await this.triggerGeneration();
             }}
           />`
         : this._perpPoints == null
@@ -82,8 +77,23 @@ export class AppRoot extends LitElement {
               perpPoints=${JSON.stringify(this._perpPoints)}
             ></paper-render>
           </div> `}
-      <generation-input-controls></generation-input-controls>
+      <generation-input-controls
+        @changed=${async (e) => {
+          this._generationInput = e.detail.generationInput;
+          this.triggerGeneration();
+        }}
+      ></generation-input-controls>
     `;
+  }
+
+  async triggerGeneration() {
+    if (this._inputFile) {
+      const result = await this.generator.generate(
+        this._generationInput.withInputSvgData(this._inputFile)
+      );
+      this._perpPoints = result.perpPoints;
+      this._stl = result.stl;
+    }
   }
 }
 
