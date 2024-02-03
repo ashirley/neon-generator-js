@@ -54,6 +54,15 @@ export class GenerationInputControls extends LitElement {
             >
               ...
             </button>
+
+            <button
+              @click=${(e) => {
+                this.fireNewImageClickedEvent();
+              }}
+            >
+              Img
+            </button>
+
             <label class="resolutionContainer"
               >Resolution
               <input
@@ -189,6 +198,14 @@ export class GenerationInputControls extends LitElement {
               ...
             </button>
 
+            <button
+              @click=${(e) => {
+                this.fireNewImageClickedEvent();
+              }}
+            >
+              Img
+            </button>
+
             <label class="lengthContainer">
               <input
                 id="lengthCheck"
@@ -265,6 +282,15 @@ export class GenerationInputControls extends LitElement {
             </label>
           </div>`}
     `;
+  }
+
+  fireNewImageClickedEvent() {
+    let myEvent = new CustomEvent("newImageClicked", {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(myEvent);
   }
 
   firstUpdated() {

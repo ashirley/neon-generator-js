@@ -82,6 +82,9 @@ export class AppRoot extends LitElement {
           this._generationInput = e.detail.generationInput;
           this.triggerGeneration();
         }}
+        @newImageClicked=${() => {
+          this._inputFile = null;
+        }}
       ></generation-input-controls>
     `;
   }
