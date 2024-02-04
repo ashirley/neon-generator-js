@@ -1,5 +1,5 @@
 "use strict";
-import "../node_modules/paper/dist/paper-core.js";
+import "./node_modules/paper/dist/paper-core.js";
 import {
   LitElement,
   html,
