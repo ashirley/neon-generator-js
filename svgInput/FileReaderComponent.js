@@ -43,19 +43,19 @@ export class FileReaderComponent extends LitElement {
       </div>
       <h3>Samples</h3>
       <div class="samples">
-        ${this.sample("2 lines", "/examples/2lines.svg")}
-        ${this.sample("Arc", "/examples/arc.svg")}
-        ${this.sample("Freehand Simpler", "/examples/freehand-simpler.svg")}
-        ${this.sample("Lines", "/examples/lines.svg")}
-        ${this.sample("Size", "/examples/size.svg")}
-        ${this.sample("Toilet (small)", "/examples/toilet-small.svg")}
-        ${this.sample("Tree", "/examples/tree.svg")}
-        ${this.sample("2 paths", "/examples/2paths.svg")}
-        ${this.sample("Curves", "/examples/curves.svg")}
-        ${this.sample("Freehand", "/examples/freehand.svg")}
-        ${this.sample("S Curves", "/examples/s-curves.svg")}
-        ${this.sample("Spiral", "/examples/spiral.svg")}
-        ${this.sample("Toilet", "/examples/toilet.svg")}
+        ${this.sample("2 lines", "./examples/2lines.svg")}
+        ${this.sample("Arc", "./examples/arc.svg")}
+        ${this.sample("Freehand Simpler", "./examples/freehand-simpler.svg")}
+        ${this.sample("Lines", "./examples/lines.svg")}
+        ${this.sample("Size", "./examples/size.svg")}
+        ${this.sample("Toilet (small)", "./examples/toilet-small.svg")}
+        ${this.sample("Tree", "./examples/tree.svg")}
+        ${this.sample("2 paths", "./examples/2paths.svg")}
+        ${this.sample("Curves", "./examples/curves.svg")}
+        ${this.sample("Freehand", "./examples/freehand.svg")}
+        ${this.sample("S Curves", "./examples/s-curves.svg")}
+        ${this.sample("Spiral", "./examples/spiral.svg")}
+        ${this.sample("Toilet", "./examples/toilet.svg")}
       </div>
     `;
   }
