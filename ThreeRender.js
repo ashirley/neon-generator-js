@@ -28,6 +28,7 @@ function resizeCanvasToDisplaySize(renderer, camera) {
 export class ThreeRender extends LitElement {
   static properties = {
     perpPoints: { type: Array },
+    backPlatePerimeter: { type: Array },
   };
 
   static styles = css`
@@ -155,6 +156,23 @@ export class ThreeRender extends LitElement {
 
     const mesh = new THREE.Mesh(geometry, material);
     group.add(mesh);
+
+    //add the backPlate if needed
+    if (this.backPlatePerimeter) {
+      const bpShape = new THREE.Shape(
+        this.backPlatePerimeter.map((p) => new THREE.Vector2(p[1], p[2]))
+      );
+      const bpGeometry = new THREE.ExtrudeGeometry(bpShape, {
+        steps: 2,
+        depth: wall_width,
+        bevelEnabled: false,
+      });
+      bpGeometry.translate(-bbc.x, -bbc.y, -bbc.z);
+      bpGeometry.computeVertexNormals();
+
+      const mesh = new THREE.Mesh(bpGeometry, material);
+      group.add(mesh);
+    }
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     material.envMap = pmremGenerator.fromScene(scene);

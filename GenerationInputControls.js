@@ -11,12 +11,13 @@ export class GenerationInputControls extends LitElement {
     _lengthVal: { state: true },
     _lengthUnit: { state: true },
     _profileType: { state: true },
+    _backPlateCheck: { state: true },
   };
 
   constructor() {
     super();
     //TODO: don't initialise and store if we havn't explicitly set them
-    this._resolution = 500;
+    this._resolution = 50;
     this._lengthUnit = "mm";
     this._profileType = "10mm";
     this._profileCustomChannelWidth = 10;
@@ -188,6 +189,18 @@ export class GenerationInputControls extends LitElement {
                     />`
                 : ""}
             </label>
+            <label class="backPlateContainer"
+              >Include Back Plate<input
+                id="backPlateCheck"
+                name="backPlateCheck"
+                ?checked=${this._backPlateCheck}
+                type="checkbox"
+                @change=${(e) => {
+                  this._backPlateCheck = e.target.checked;
+                  this.fireEvent();
+                }}
+              />
+            </label>
           </div>`
         : html`<div class="collapsed">
             <button
@@ -338,14 +351,14 @@ export class GenerationInputControls extends LitElement {
       }
     })();
 
-    console.log(
-      this._resolution,
-      this._lengthCheck,
-      this._lengthVal,
-      this._lengthUnit,
-      lengthInPts,
-      JSON.stringify(profileSize)
-    );
+    // console.log(
+    //   this._resolution,
+    //   this._lengthCheck,
+    //   this._lengthVal,
+    //   this._lengthUnit,
+    //   lengthInPts,
+    //   JSON.stringify(profileSize)
+    // );
 
     let myEvent = new CustomEvent("changed", {
       detail: {
@@ -353,7 +366,8 @@ export class GenerationInputControls extends LitElement {
           null,
           lengthInPts,
           this._resolution,
-          profileSize
+          profileSize,
+          this._backPlateCheck
         ),
       },
       bubbles: true,

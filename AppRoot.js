@@ -7,13 +7,15 @@ import { Generator } from "./generator/Generator.js";
 import { FileReaderComponent } from "./svgInput/FileReaderComponent.js";
 import { PaperRender } from "./PaperRender.js";
 import { ThreeRender } from "./ThreeRender.js";
+import { BackPlateDebug } from "./BackPlateDebug.js";
 import { GenerationInputControls } from "./GenerationInputControls.js";
 
 export class AppRoot extends LitElement {
   static properties = {
     _inputFile: { state: true },
     _perpPoints: { state: true },
-    _stl: { state: true },
+    _backPlatePerimeter: { state: true },
+    _backPlatePerimeterDebug: { state: true },
   };
 
   constructor() {
@@ -70,11 +72,19 @@ export class AppRoot extends LitElement {
         : this._perpPoints == null
         ? html`<p>Generating...</p>`
         : html`<div class="renders">
+            <!-- <back-plate-debug
+              backPlatePerimeter=${JSON.stringify(this._backPlatePerimeter)}
+              backPlatePerimeterDebug=${JSON.stringify(
+              this._backPlatePerimeterDebug
+            )}
+            ></back-plate-debug> -->
             <three-render
               perpPoints=${JSON.stringify(this._perpPoints)}
+              backPlatePerimeter=${JSON.stringify(this._backPlatePerimeter)}
             ></three-render>
             <paper-render
               perpPoints=${JSON.stringify(this._perpPoints)}
+              backPlatePerimeter=${JSON.stringify(this._backPlatePerimeter)}
             ></paper-render>
           </div> `}
       <generation-input-controls
@@ -95,7 +105,8 @@ export class AppRoot extends LitElement {
         this._generationInput.withInputSvgData(this._inputFile)
       );
       this._perpPoints = result.perpPoints;
-      this._stl = result.stl;
+      this._backPlatePerimeter = result.backPlatePerimeter;
+      this._backPlatePerimeterDebug = result.backPlatePerimeterDebug;
     }
   }
 }

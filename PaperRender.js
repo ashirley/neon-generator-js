@@ -10,6 +10,7 @@ import {
 export class PaperRender extends LitElement {
   static properties = {
     perpPoints: { type: Array },
+    backPlatePerimeter: { type: Array },
   };
 
   render() {
@@ -38,14 +39,6 @@ export class PaperRender extends LitElement {
     // console.log("updated");
     this.paperProject.activeLayer.removeChildren();
     //TODO: copy original SVG into debug output
-
-    // const testCircle = new paper.Shape.Circle(new paper.Point(1, 1), 2);
-    // testCircle.fillColor = "black";
-    // this.paperProject.activeLayer.addChild(testCircle);
-
-    // const testCircle2 = new paper.Shape.Circle(new paper.Point(5, 1), 2);
-    // testCircle2.fillColor = "green";
-    // this.paperProject.activeLayer.addChild(testCircle2);
 
     const g = new paper.Group();
     this.paperProject.activeLayer.addChild(g);
@@ -101,7 +94,22 @@ export class PaperRender extends LitElement {
       });
     });
 
-    //TODO: back plate
+    //back plate
+    if (this.backPlatePerimeter) {
+      const bpg = new paper.Group();
+      this.paperProject.activeLayer.addChild(bpg);
+
+      bpg.addChild(
+        new paper.Path({
+          segments: this.backPlatePerimeter.map((point) => [
+            point[1],
+            point[2],
+          ]),
+          strokeColor: "green",
+          closed: true,
+        })
+      );
+    }
     //TODO: curvature comb
 
     this.resizeToCanvas();
