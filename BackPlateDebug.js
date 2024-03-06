@@ -41,6 +41,11 @@ export class BackPlateDebug extends LitElement {
     this.paperProject.activeLayer.removeChildren();
     //TODO: copy original SVG into debug output
 
+    if (this.backPlatePerimeter == null) {
+      console.error("Enable backplate");
+      return;
+    }
+
     const bpg = new paper.Group();
     this.paperProject.activeLayer.addChild(bpg);
 

@@ -9,6 +9,9 @@ export class Generator {
     //TODO: optimise_perp_points_list
     const { backPlatePerimeter, backPlatePerimeterDebug } =
       this.generateBackPlatePerimeter(generationInput, perpPoints);
+
+    //TODO: handle errors and warnings
+    // - e.g. detect overlapping perimeter or discontinuous lines.
     return { perpPoints, backPlatePerimeter, backPlatePerimeterDebug };
   }
 
@@ -16,6 +19,22 @@ export class Generator {
     // @ts-ignore
     const paperProject = paper.setup().project;
     paperProject.importSVG(inputSvgData);
+
+    const paths = paperProject.getItems({
+      class: paper.Path,
+    });
+
+    // optimise the paths so they are as contiguous as possible
+    // TODO: more sophistication
+    paths.forEach((p, i) => {
+      if (i > 0 && !this.pathsAreContinuous(paths[i - 1], p)) {
+        //reverse the path and see if that helps, if not put it back
+        p.reverse();
+        if (!this.pathsAreContinuous(paths[i - 1], p)) {
+          p.reverse();
+        }
+      }
+    });
 
     return paperProject;
   }
@@ -128,14 +147,16 @@ export class Generator {
       // console.debug(path);
       for (let i = 0; i < path.curves.length; i++) {
         //TODO: what were called segments in python are called curves in paper.js
-        const curr_segment = path.curves[i]; // current segment
+        // current segment
+        const curr_segment = path.curves[i];
+        // next segment, if any
         next_segment =
           i + 1 < path.curves.length
-            ? path.curves[i + 1]
+            ? path.curves[i + 1] // still in this path, use the next curve
             : j + 1 < paths.length &&
-              path.lastSegment.point.isClose(paths[j + 1].firstSegment.point, 1)
-            ? paths[j + 1].firstCurve
-            : null; // next segment, if any
+              this.pathsAreContinuous(path, paths[j + 1])
+            ? paths[j + 1].firstCurve // going to next path and it is contiguous
+            : null; // either there is no next path or it isn't contiguous
         var curr_join = null; // angle between the current segment and the next
 
         // console.debug(i, curr_segment, next_segment);
@@ -224,6 +245,10 @@ export class Generator {
 
     // console.log(perp_points_lists);
     return perp_points_lists;
+  }
+
+  pathsAreContinuous(path, nextPath) {
+    return path.lastSegment.point.isClose(nextPath.firstSegment.point, 1);
   }
 
   /**
