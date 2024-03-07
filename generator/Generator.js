@@ -281,8 +281,11 @@ export class Generator {
     };
   }
 
-  // How much do we favour following the concave shape rather than taking a shortcut?
-  concave_factor = 1.1;
+  // How much do we favour following the concave shape rather than taking a new shortcut?
+  concave_factor_new = 1.1;
+
+  // How much do we favour following the concave shape rather than extending a shortcut?
+  concave_factor_extend = 1.001;
 
   /**
    * Given a line forming a closed shape, find the shape which covers the whole line with "reasonable" concave sections.
@@ -308,6 +311,7 @@ export class Generator {
 
     var workingShape = initialPerimeter.map((v, i) => [i, v]);
     const possible_shortcuts = {}; // start index -> ([indexes of removed points], original distance)
+    const complete_shortcuts = new Set(); // the indexes adjacent to removed nodes. This may include removed nodes.
     var debugRetval = [];
     var curr_index = 1;
     var prev_index = 0;
@@ -371,7 +375,13 @@ export class Generator {
 
           const shortcut_distance = this.distance(prev_point, next_point);
 
-          if (original_distance < this.concave_factor * shortcut_distance) {
+          const concave_factor =
+            complete_shortcuts.has(prev_index) ||
+            complete_shortcuts.has(curr_index)
+              ? this.concave_factor_extend
+              : this.concave_factor_new;
+
+          if (original_distance < concave_factor * shortcut_distance) {
             // console.log(
             //   `concave-small  ${(
             //     (original_distance / shortcut_distance - 1) *
@@ -420,6 +430,8 @@ export class Generator {
             if (curr_index in possible_shortcuts) {
               delete possible_shortcuts[curr_index];
             }
+            complete_shortcuts.add(prev_index);
+            complete_shortcuts.add(next_index);
           }
           // console.log(
           //   prev_index,
